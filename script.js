@@ -78,20 +78,19 @@ let fetchedData = [];
 
 
 //Method 2 : fetching data using async await method  
-// async function fetchDataAndRenderTable() {
-//   try {
-//     const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false');
-//     const data = await response.json();
-//     const keysToDisplay = ['image', 'name', 'symbol', 'current_price', 'total_volume', 'market_cap_change_percentage_24h','market_cap']; // Specify the keys you want to display
+async function fetchDataAndRenderTable() {
+  try {
+    const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false');
+    const data = await response.json();
+    const keysToDisplay = ['image', 'name', 'symbol', 'current_price', 'total_volume', 'market_cap_change_percentage_24h','market_cap']; // Specify the keys you want to display
     
-//     renderTable(data, keysToDisplay);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-// fetchDataAndRenderTable();
+    renderTable(data, keysToDisplay);
+  } catch (error) {
+    console.log(error);
+  }
+}
+fetchDataAndRenderTable();
   
-
 const searchInput = document.getElementById('search-input');
 const sortMarketCapButton = document.getElementById('sort-mkt-cap-button');
 const sortPercentageChangeButton = document.getElementById('sort-by-percentage-button');
