@@ -25,14 +25,14 @@ fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=mark
       // Iterate over the specified keys and create columns
       keys.forEach(key => {
         const column = document.createElement('td');
-        // if (key === 'image') {
-        //   const image = document.createElement('img');
-        //   image.src = item[key];
-        //   column.appendChild(image);
-        // } else {
-        //   column.textContent = item[key];
-        // }
-        column.textContent = item[key];
+        if (key === 'image') {
+          const image = document.createElement('img');
+          image.src = item[key];
+          column.appendChild(image);
+        } else {
+          column.textContent = item[key];
+        }
+       // column.textContent = item[key];
         row.appendChild(column);
       });
       
