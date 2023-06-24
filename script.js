@@ -2,22 +2,24 @@
 //const keysToDisplay = ['image', 'name', 'symbol', 'id', 'current_price', 'total_volume'];
 const keysToDisplay = ['image', 'name', 'symbol', 'id' ,'current_price', 'total_volume', 'market_cap_change_percentage_24h','market_cap'];
 
+let fetchedData = []; 
 
 //Method 1: fetching data using .then method
 
-  // function fetchData(){
-  //   fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false')
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     // Process the fetched data
-  //     renderTable(data,keysToDisplay);
-  //   })
-  //   .catch(error => {
-  //     // Handle any errors
-  //     console.log(error);
-  //   });
-  // }
-  // fetchData();
+  function fetchData(){
+    fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false')
+    .then(response => response.json())
+    .then(data => {
+      // Process the fetched data
+         fetchedData = data;
+      renderTable(data,keysToDisplay);
+    })
+    .catch(error => {
+      // Handle any errors
+      console.log(error);
+    });
+  }
+  fetchData();
 
   function renderTable(data, keys) {
     const tableBody = document.querySelector('#data-table tbody');
@@ -96,15 +98,23 @@ const sortPercentageChangeButton = document.getElementById('sort-by-percentage-b
 
 sortMarketCapButton.addEventListener("click",()=>{
   fetchData();
-  const sortedData = data.sort((a,b) => a[market_cap].localeCompare(b[market_cap]));
-  const keys = ['image', 'name', 'symbol', 'current_price', 'total_volume', 'market_cap_change_percentage_24h','market_cap']; 
+  const keys = ['image', 'name', 'symbol', 'current_price', 'total_volume', 'market_cap_change_percentage_24h','market_cap'];
+  const sortedData = fetchedData.sort((a,b) => a['market_cap'].localeCompare(b['market_cap']));
   renderTable(sortedData, keys)
 });
 
 sortPercentageChangeButton.addEventListener("click",()=>{
   fetchData();
-  const sortedData = data.sort((a,b) => a[market_cap_change_percentage_24h].localeCompare(b[market_cap_change_percentage_24h]));
-  const keys = ['image', 'name', 'symbol', 'current_price', 'total_volume', 'market_cap_change_percentage_24h','market_cap']; 
+  const keys = ['image', 'name', 'symbol', 'current_price', 'total_volume', 'market_cap_change_percentage_24h','market_cap'];
+  const sortedData = fetchedData.sort((a,b) => a['market_cap_change_percentage_24h'].localeCompare(b['market_cap_change_percentage_24h']));
+ 
 renderTable(sortedData, keys)
 });
 
+searchInput.addEventListener("search",()=>{
+  fetchData();
+  const keys = ['image', 'name', 'symbol', 'current_price', 'total_volume', 'market_cap_change_percentage_24h','market_cap'];
+  const filteredData = fetchedData.filter((item) => item[searchKey].toLowerCase().iincludes(searchTerm.toLowerCase()));
+   
+renderTable(filteredData, keys)
+});
