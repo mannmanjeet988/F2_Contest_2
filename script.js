@@ -5,17 +5,19 @@ const keysToDisplay = ['image', 'name', 'symbol', 'id' ,'current_price', 'total_
 
 //Method 1: fetching data using .then method
 
-fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false')
-  .then(response => response.json())
-  .then(data => {
-    // Process the fetched data
-    renderTable(data,keysToDisplay);
-  })
-  .catch(error => {
-    // Handle any errors
-    console.log(error);
-  });
-
+  // function fetchData(){
+  //   fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false')
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     // Process the fetched data
+  //     renderTable(data,keysToDisplay);
+  //   })
+  //   .catch(error => {
+  //     // Handle any errors
+  //     console.log(error);
+  //   });
+  // }
+  // fetchData();
 
   function renderTable(data, keys) {
     const tableBody = document.querySelector('#data-table tbody');
@@ -31,7 +33,6 @@ fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=mark
       keys.forEach(key => {
         const column = document.createElement('td');
 
-        
         if (key === 'image') {
           const image = document.createElement('img');
           image.src = item[key];
@@ -93,30 +94,17 @@ const searchInput = document.getElementById('search-input');
 const sortMarketCapButton = document.getElementById('sort-mkt-cap-button');
 const sortPercentageChangeButton = document.getElementById('sort-by-percentage-button');
 
+sortMarketCapButton.addEventListener("click",()=>{
+  fetchData();
+  const sortedData = data.sort((a,b) => a[market_cap].localeCompare(b[market_cap]));
+  const keys = ['image', 'name', 'symbol', 'current_price', 'total_volume', 'market_cap_change_percentage_24h','market_cap']; 
+  renderTable(sortedData, keys)
+});
 
-function renderTable(data, keys, sorted_key) {
-  const tableBody = document.querySelector('#data-table tbody');
-
-  // Clear any existing data
-  tableBody.innerHTML = '';
-
-  // Sort the data based on the specified key
-  data.sort((a, b) => a[sorted_key].localeCompare(b[sorted_key]));
-
-  // Iterate over the sorted data and create rows
-  data.forEach(item => {
-    const row = document.createElement('tr');
-
-    // Iterate over the specified keys and create columns
-    keys.forEach(key => {
-      const column = document.createElement('td');
-      column.textContent = item[key];
-      row.appendChild(column);
-    });
-
-    // Append row to table body
-    tableBody.appendChild(row);
-  });
-} 
-
+sortPercentageChangeButton.addEventListener("click",()=>{
+  fetchData();
+  const sortedData = data.sort((a,b) => a[market_cap_change_percentage_24h].localeCompare(b[market_cap_change_percentage_24h]));
+  const keys = ['image', 'name', 'symbol', 'current_price', 'total_volume', 'market_cap_change_percentage_24h','market_cap']; 
+renderTable(sortedData, keys)
+});
 
